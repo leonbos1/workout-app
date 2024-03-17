@@ -60,6 +60,56 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\WorkoutApp.Data\WorkoutApp.Data.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\ProfilePage.xaml.cs">
+	    <DependentUpon>ProfilePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\ExercisesPage.xaml.cs">
+	    <DependentUpon>ExercisesPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\WorkoutPage.xaml.cs">
+	    <DependentUpon>WorkoutPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\MeasurePage.xaml.cs">
+	    <DependentUpon>MeasurePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\HistoryPage.xaml.cs">
+	    <DependentUpon>HistoryPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\HistoryPage.xaml.cs">
+	    <DependentUpon>HistoryPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\ProfilePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\ExercisesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\WorkoutPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\MeasurePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\HistoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\HistoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionWorkoutAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>

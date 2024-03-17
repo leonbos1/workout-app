@@ -1,0 +1,38 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WorkoutApp.Pages.ProfilePage"
+             Title="{Binding PageTitle}"
+             BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Settings" Clicked="OnSettingsClicked" IconImageSource="settings.png" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="25" Padding="30">
+
+            <Frame CornerRadius="10" Padding="10" 
+               BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}"
+               BorderColor="{AppThemeBinding Light={DynamicResource PrimaryDark}, Dark={DynamicResource Primary}}">
+                <VerticalStackLayout Spacing="15">
+                    <Image Source="user.png" WidthRequest="120" HeightRequest="120" HorizontalOptions="Center" />
+                    <Label Text="Username" FontAttributes="Bold" FontSize="Title" HorizontalOptions="Center"
+               TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
+                    <Label Text="Total Workouts: 320" HorizontalOptions="Center"
+               TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="10" Padding="15"
+               BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}"
+               BorderColor="{AppThemeBinding Light={DynamicResource PrimaryDark}, Dark={DynamicResource Primary}}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Dashboard" FontAttributes="Bold" FontSize="Title" HorizontalOptions="Center"
+                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
