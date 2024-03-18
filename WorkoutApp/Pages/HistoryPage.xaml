@@ -1,12 +1,61 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="WorkoutApp.Pages.HistoryPage"
-             Title="HistoryPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="History Page!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Workout History"
+             BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}">
+
+    <CollectionView Margin="10" ItemsSource="{Binding Workouts}">
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame CornerRadius="10" Padding="10" BorderColor="{AppThemeBinding Light=DarkGray, Dark=LightGray}" HeightRequest="200"
+                           BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="{Binding Name}" FontAttributes="Bold" HorizontalOptions="Start"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}"/>
+
+                        <HorizontalStackLayout HorizontalOptions="Start" Spacing="40" Margin="5">
+                            <HorizontalStackLayout HorizontalOptions="Start">
+                                <Image Source="clock.png" HeightRequest="20">
+                                    <Image.Behaviors>
+                                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
+                                    </Image.Behaviors>
+                                </Image>
+                                <Label Text="{Binding PrettyDuration}" HorizontalOptions="Start" Margin="10"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}"/>
+                            </HorizontalStackLayout>
+
+                            <!-- Total Weight and Weight Icon -->
+                            <HorizontalStackLayout HorizontalOptions="Start">
+                                <Image Source="weight.png" HeightRequest="20">
+                                    <Image.Behaviors>
+                                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
+                                    </Image.Behaviors>
+                                </Image>
+                                <Label Text="{Binding TotalWeight}" HorizontalOptions="Start" Margin="10"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}"/>
+                            </HorizontalStackLayout>
+
+                            <!-- PRs and Trophy -->
+                            <HorizontalStackLayout HorizontalOptions="Start">
+                                <Image Source="trophy.png" HeightRequest="20">
+                                    <Image.Behaviors>
+                                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
+                                    </Image.Behaviors>
+                                </Image>
+                                <Label Text="{Binding AmountOfPrs, StringFormat='{0} PRs'}" HorizontalOptions="Start" Margin="10"
+                                       TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}"/>
+                            </HorizontalStackLayout>
+                        </HorizontalStackLayout>
+
+                        <Label Text="{Binding AmountOfPrs}" HorizontalOptions="Start"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}"/>
+                    </VerticalStackLayout>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </ContentPage>

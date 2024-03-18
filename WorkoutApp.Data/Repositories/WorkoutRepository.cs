@@ -1,9 +1,4 @@
 ﻿using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkoutApp.Data.Models;
 using WorkoutApp.Data.Repositories.Base;
 
@@ -31,6 +26,27 @@ namespace WorkoutApp.Data.Repositories
             await Init();
 
             return await Database.Table<Workout>().Where(w => w.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Workout>> GetAllAsync()
+        {
+            await Init();
+
+            return await Database.Table<Workout>().ToListAsync();
+        }
+
+        public async Task InsertAsync(Workout workout)
+        {
+            await Init();
+
+            await Database.InsertAsync(workout);
+        }
+
+        public async Task DeleteAllAsync()
+        {
+            await Init();
+
+            await Database.DeleteAllAsync<Workout>();
         }
     }
 }

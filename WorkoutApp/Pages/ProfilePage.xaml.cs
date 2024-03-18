@@ -1,34 +1,65 @@
+using WorkoutApp.Data.Models;
+using WorkoutApp.Data.Repositories;
+using WorkoutApp.ViewModels;
+
 namespace WorkoutApp.Pages;
 
 public partial class ProfilePage : ContentPage
 {
-    public ProfilePage()
+    private WorkoutRepository _workoutRepository;
+    private ProfilePageViewModel _viewModel;
+
+    public ProfilePage(WorkoutRepository workoutRepository, ProfilePageViewModel viewModel)
     {
         InitializeComponent();
 
-        BindingContext = new ProfileViewModel();
+        _workoutRepository = workoutRepository;
+        _viewModel = viewModel;
+
+        BindingContext = _viewModel;
     }
 
-    private async void OnSettingsClicked(object sender, EventArgs e)
+    private async void OnAddWorkout(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//Settings");
-    }
-}
-
-public class ProfileViewModel : BindableObject
-{
-    private string _pageTitle = "Profile";
-
-    public string PageTitle
-    {
-        get { return _pageTitle; }
-        set
+        var workout = new Workout
         {
-            if (_pageTitle != value)
+            Name = "Sample Workout",
+            Description = "This is a sample workout",
+            StartedAt = DateTime.Now,
+            EndedAt = DateTime.Now.AddHours(1),
+            Sets = new List<ExerciseSet>
             {
-                _pageTitle = value;
-                OnPropertyChanged();
+                new ExerciseSet
+                {
+                    Exercise = new Exercise
+                    {
+                        Name = "Pushups",
+                        Description = "Do as many pushups as you can"
+                    },
+                    Reps = 10,
+                    Weight = 0
+                },
+                new ExerciseSet
+                {
+                    Exercise = new Exercise
+                    {
+                        Name = "Squats",
+                        Description = "Do as many squats as you can"
+                    },
+                    Reps = 10,
+                    Weight = 0
+                }
             }
-        }
+        };
+
+        await _workoutRepository.InsertAsync(workout);
+        Console.WriteLine("Workout added");
+    }
+
+    private async void OnRemoveWorkouts(object sender, EventArgs e)
+    {
+        await _workoutRepository.DeleteAllAsync();
+        Console.WriteLine("Workouts removed");
     }
 }
+

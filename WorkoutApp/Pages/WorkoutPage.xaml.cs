@@ -6,4 +6,18 @@ public partial class WorkoutPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+	private async void OnNewWorkout(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync("newworkout");
+    }
+
+    //OnAddTemplate
+	public async void OnAddTemplate(object sender, EventArgs e)
+	{
+        await Shell.Current.GoToAsync("addtemplate");
+    }
+
+    //OnEditTemplate
+
 }

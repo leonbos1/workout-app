@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="WorkoutApp.Pages.WorkoutPage"
              Title="WorkoutPage">
-    <VerticalStackLayout>
+    <VerticalStackLayout Padding="10">
         <Label 
-            Text="Workout Page!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            Text="Quick start" />
+        <Button 
+            Text="START A NEW WORKOUT" BackgroundColor="DarkBlue" TextColor="White"
+            Clicked="OnNewWorkout" />
+
+        <HorizontalStackLayout>
+            <Label
+                Text="My templates"
+                HorizontalOptions="StartAndExpand" />
+            <ImageButton 
+                Source="plus.png"
+                HeightRequest="25"
+                HorizontalOptions="EndAndExpand"
+                Clicked="OnAddTemplate">
+                <ImageButton.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
+                </ImageButton.Behaviors>
+            </ImageButton>
+        </HorizontalStackLayout>
+
     </VerticalStackLayout>
 </ContentPage>
