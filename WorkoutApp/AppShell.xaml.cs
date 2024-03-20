@@ -7,8 +7,6 @@ namespace WorkoutApp
         public AppShell()
         {
             InitializeComponent();
-
-            Routing.RegisterRoute("newworkout", typeof(NewWorkoutPage));
         }
     }
 }
