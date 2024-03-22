@@ -4,7 +4,7 @@ namespace WorkoutApp.Pages;
 
 public partial class WorkoutPage : ContentPage
 {
-    private const uint animationTime = 500;
+    public const uint animationTime = 500;
     private System.Timers.Timer _workoutTimer;
     private TimeSpan _workoutDuration;
 
@@ -54,9 +54,9 @@ public partial class WorkoutPage : ContentPage
 
     private async void OnAddExerciseClicked(object sender, EventArgs e)
     {
-        var addExercisePage = new AddExercisePage();
+        AddExerciseContent.IsVisible = true;
 
-        await Navigation.PushAsync(addExercisePage);
+        await AddExerciseContent.TranslateTo(0, 0, animationTime, Easing.SinIn);
     }
 
     private void OnTimedEvent(Object source, ElapsedEventArgs e)
@@ -66,6 +66,7 @@ public partial class WorkoutPage : ContentPage
         MainThread.BeginInvokeOnMainThread(() =>
         {
             TimerLabel.Text = _workoutDuration.ToString(@"hh\:mm\:ss");
+            TimerLabel2.Text = _workoutDuration.ToString(@"hh\:mm\:ss");
         });
     }
 
@@ -83,6 +84,10 @@ public partial class WorkoutPage : ContentPage
             _workoutTimer.Elapsed += OnTimedEvent;
             _workoutTimer.AutoReset = true;
             _workoutTimer.Enabled = true;
+        }
+        else
+        {
+            OngoingWorkoutContent.IsVisible = true;
         }
     }
 }

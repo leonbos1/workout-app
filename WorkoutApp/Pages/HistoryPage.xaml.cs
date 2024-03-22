@@ -17,6 +17,7 @@ public partial class HistoryPage : ContentPage
         base.OnAppearing();
 
         var viewModel = BindingContext as HistoryPageViewModel;
+
         if (viewModel != null)
         {
             viewModel.LoadWorkouts();

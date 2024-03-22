@@ -104,7 +104,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\AddExercisePage.xaml">
+	  <MauiXaml Update="Pages\AddExercise.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\ProfilePage.xaml">

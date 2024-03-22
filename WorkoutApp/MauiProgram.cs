@@ -8,6 +8,11 @@ namespace WorkoutApp
 {
     public static class MauiProgram
     {
+        static IServiceProvider serviceProvider;
+
+        public static TService GetService<TService>()
+            => serviceProvider.GetService<TService>();
+
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -24,15 +29,21 @@ namespace WorkoutApp
             builder.Services.AddSingleton<ProfilePageViewModel>();
 
             builder.Services.AddSingleton<WorkoutRepository>();
+            builder.Services.AddSingleton<ExerciseRepository>();
 
+            builder.Services.AddTransient<AddExercise>();
             builder.Services.AddTransient<ProfilePage>();
             builder.Services.AddTransient<HistoryPage>();
+            builder.Services.AddTransient<WorkoutPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+            var app = builder.Build();
 
-            return builder.Build();
+            serviceProvider = app.Services;
+
+            return app;
         }
     }
 }

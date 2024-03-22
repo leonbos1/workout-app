@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:WorkoutApp.Pages"
+             x:Class="WorkoutApp.Pages.AddExercise">
+    <VerticalStackLayout Padding="10" BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}">
+        <Label Text="Add Exercise" FontSize="Title" TextColor="{AppThemeBinding Light={DynamicResource PrimaryDark}, Dark={DynamicResource Primary}}" />
+        <CollectionView x:Name="ExercisesCollectionView" ItemsSource="{Binding Exercises}" SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="{Binding Name}" FontSize="Body" TextColor="{AppThemeBinding Light={DynamicResource PrimaryDark}, Dark={DynamicResource Primary}}" />
+                        <Button Grid.Column="1" Text="Add" Clicked="OnAddClicked" CommandParameter="{Binding .}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Text="Close" Clicked="OnCloseClicked" />
+    </VerticalStackLayout>
+</ContentView>
+ 
