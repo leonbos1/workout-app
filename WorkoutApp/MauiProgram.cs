@@ -31,7 +31,8 @@ namespace WorkoutApp
             builder.Services.AddSingleton<WorkoutRepository>();
             builder.Services.AddSingleton<ExerciseRepository>();
 
-            builder.Services.AddTransient<AddExercise>();
+            builder.Services.AddTransient<AddExerciseView>();
+
             builder.Services.AddTransient<ProfilePage>();
             builder.Services.AddTransient<HistoryPage>();
             builder.Services.AddTransient<WorkoutPage>();
