@@ -18,7 +18,9 @@ namespace WorkoutApp.Data.Repositories
                 return;
 
             Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
-            var result = await Database.CreateTableAsync<Workout>();
+
+            _ = await Database.CreateTableAsync<Workout>();
+            _ = await Database.CreateTableAsync<ExerciseSet>();
         }
 
         public async Task<Workout> GetByIdAsync(int id)
@@ -32,7 +34,24 @@ namespace WorkoutApp.Data.Repositories
         {
             await Init();
 
-            return await Database.Table<Workout>().ToListAsync();
+            var workouts = await Database.Table<Workout>().ToListAsync();
+
+            foreach (var workout in workouts)
+            {
+                workout.Batches = await Database.Table<ExerciseBatch>().Where(b => b.WorkoutId == workout.Id).ToListAsync();
+
+                foreach (var batch in workout.Batches)
+                {
+                    batch.Sets = await Database.Table<ExerciseSet>().Where(s => s.ExerciseBatchId == batch.Id).ToListAsync();
+
+                    foreach (var set in batch.Sets)
+                    {
+                        set.Exercise = await Database.Table<Exercise>().Where(e => e.Id == set.ExerciseId).FirstOrDefaultAsync();
+                    }
+                }
+            }
+
+            return workouts;
         }
 
         public async Task InsertAsync(Workout workout)
@@ -47,6 +66,20 @@ namespace WorkoutApp.Data.Repositories
             await Init();
 
             await Database.DeleteAllAsync<Workout>();
+        }
+
+        public async Task DeleteAllSetsAsync()
+        {
+            await Init();
+
+            await Database.DeleteAllAsync<ExerciseSet>();
+        }
+
+        public async Task<int> GetNumOfWorkouts()
+        {
+            await Init();
+
+            return await Database.Table<Workout>().CountAsync();
         }
     }
 }

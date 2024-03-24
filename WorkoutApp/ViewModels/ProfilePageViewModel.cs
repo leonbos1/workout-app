@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace WorkoutApp.ViewModels
 {
-    public class ProfilePageViewModel : BindableObject
+    public class ProfilePageViewModel : INotifyPropertyChanged
     {
-        private string _pageTitle = "Profile";
+        private int _numOfWorkouts;
 
-        public string PageTitle
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public int NumOfWorkouts
         {
-            get { return _pageTitle; }
+            get => _numOfWorkouts;
             set
             {
-                if (_pageTitle != value)
-                {
-                    _pageTitle = value;
-                    OnPropertyChanged();
-                }
+                _numOfWorkouts = value;
+                OnPropertyChanged(nameof(NumOfWorkouts));
             }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

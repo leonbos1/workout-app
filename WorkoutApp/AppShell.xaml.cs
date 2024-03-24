@@ -1,6 +1,4 @@
-﻿using WorkoutApp.Pages;
-
-namespace WorkoutApp
+﻿namespace WorkoutApp
 {
     public partial class AppShell : Shell
     {

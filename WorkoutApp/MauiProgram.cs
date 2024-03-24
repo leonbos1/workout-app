@@ -30,6 +30,8 @@ namespace WorkoutApp
 
             builder.Services.AddSingleton<WorkoutRepository>();
             builder.Services.AddSingleton<ExerciseRepository>();
+            builder.Services.AddSingleton<ExerciseSetRepository>();
+            builder.Services.AddSingleton<ExerciseBatchRepository>();
 
             builder.Services.AddTransient<AddExerciseView>();
 

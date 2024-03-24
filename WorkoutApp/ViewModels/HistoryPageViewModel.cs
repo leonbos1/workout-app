@@ -28,7 +28,7 @@ namespace WorkoutApp.ViewModels
             {
                 Workouts.Add(workout);
             }
-            
+
             Console.WriteLine("Amount of workouts: " + Workouts.Count);
         }
     }

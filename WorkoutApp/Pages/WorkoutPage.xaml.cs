@@ -11,33 +11,38 @@ public partial class WorkoutPage : ContentPage
     private System.Timers.Timer _workoutTimer;
     private TimeSpan _workoutDuration;
     private WorkoutPageViewModel _viewModel;
+    private WorkoutRepository _workoutRepository;
+    private ExerciseBatchRepository _exerciseBatchRepository;
+    private ExerciseSetRepository _exerciseSetRepository;
+    private Workout Workout { get; set; }
 
-    public WorkoutPage(WorkoutRepository workoutRepository)
+    public WorkoutPage(WorkoutRepository workoutRepository, ExerciseBatchRepository exerciseBatchRepository, ExerciseSetRepository
+        exerciseSetRepository)
     {
         InitializeComponent();
 
         AddExerciseContent.ExerciseAdded += OnExerciseAdded;
 
+        _workoutRepository = workoutRepository;
+
+        Workout = new Workout();
+
         _viewModel = new WorkoutPageViewModel();
 
         BindingContext = _viewModel;
+
+        _workoutRepository = workoutRepository;
+        _exerciseBatchRepository = exerciseBatchRepository;
+        _exerciseSetRepository = exerciseSetRepository;
     }
 
-    private void OnExerciseAdded(object sender, Exercise e)
+    private async void OnExerciseAdded(object sender, Exercise e)
     {
         Console.WriteLine($"Exercise Added: {e.Name}");
 
-        _viewModel.Sets.Add(new ExerciseSet
-        {
-            Exercise = e,
-            Reps = 0,
-            Weight = 0,
-            SetNumber = _viewModel.Sets.Count + 1,
-            IsNewSet = true,
-            IsExistingSet = false
-        });
+        var batch = new ExerciseBatchViewModel(e);
 
-        Console.WriteLine($"Sets Count: {_viewModel.Sets.Count}");
+        _viewModel.ExerciseBatches.Add(batch);
 
         AddExerciseContent.IsVisible = false;
     }
@@ -48,6 +53,8 @@ public partial class WorkoutPage : ContentPage
         _workoutDuration = TimeSpan.Zero;
 
         NewWorkoutContent.IsVisible = true;
+
+        Workout.StartedAt = DateTime.Now;
 
         await NewWorkoutContent.TranslateTo(0, 0, AnimationTime, Easing.SinIn);
     }
@@ -65,18 +72,57 @@ public partial class WorkoutPage : ContentPage
 
         OngoingWorkoutContent.IsVisible = false;
 
+        Workout.EndedAt = DateTime.Now;
+        Workout.Batches = _viewModel.ExerciseBatches.Select(b => b.ToModel()).ToList();
+
+        foreach (var batch in Workout.Batches)
+        {
+            await _exerciseBatchRepository.InsertAsync(batch);
+
+            foreach (var set in batch.Sets)
+            {
+                await _exerciseSetRepository.InsertAsync(set);
+            }
+        }
+
+        await _workoutRepository.InsertAsync(Workout);
+
         await NewWorkoutContent.TranslateTo(0, DeviceDisplay.MainDisplayInfo.Height, AnimationTime, Easing.SinOut);
     }
 
-    private async void OnAddButtonClicked(object sender, EventArgs e)
+    private async void OnAddSetButtonClicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
-        var set = (ExerciseSet)button.BindingContext;
+        var parentStackLayout = (StackLayout)button.Parent;
+        var repsEntry = (Entry)parentStackLayout.Children.First(c => c is Entry && c.AutomationId == "RepsEntry");
+        var weightEntry = (Entry)parentStackLayout.Children.First(c => c is Entry && c.AutomationId == "WeightEntry");
 
-        _viewModel.AddNewSet(set.Weight, set.Reps);
+        int reps = int.TryParse(repsEntry.Text, out int r) ? r : 0;
+        double weight = double.TryParse(weightEntry.Text, out double w) ? w : 0.0;
 
-        Console.WriteLine($"Reps added: {set.Reps}");
-        Console.WriteLine($"Weight added: {set.Weight}");
+        Console.WriteLine($"Add Set Button Clicked: {reps} x {weight}");
+
+        var context = (ExerciseBatchViewModel)button.BindingContext;
+        context.Sets.Add(new ExerciseSetViewModel { Reps = reps, Weight = weight });
+
+        repsEntry.Text = string.Empty;
+        weightEntry.Text = string.Empty;
+
+        await _exerciseSetRepository.InsertAsync(new ExerciseSet { Reps = reps, Weight = weight, ExerciseBatchId = context. });
+    }
+
+    private async void OnDeleteSetButtonClicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        var context = (ExerciseSetViewModel)button.BindingContext;
+
+        var parentStackLayout = (StackLayout)button.Parent;
+
+        var exerciseBatch = (ExerciseBatchViewModel)parentStackLayout.BindingContext;
+
+        exerciseBatch.Sets.Remove(context);
+
+        Console.WriteLine("Delete Set Button Clicked");
     }
 
     private async void OnAddTemplateClicked(object sender, EventArgs e)

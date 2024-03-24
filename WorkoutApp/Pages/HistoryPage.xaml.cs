@@ -5,7 +5,7 @@ namespace WorkoutApp.Pages;
 
 public partial class HistoryPage : ContentPage
 {
-	public HistoryPage(WorkoutRepository workoutRepository)
+    public HistoryPage(WorkoutRepository workoutRepository)
     {
         InitializeComponent();
 

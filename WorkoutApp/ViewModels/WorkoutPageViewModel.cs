@@ -6,18 +6,13 @@ namespace WorkoutApp.ViewModels
 {
     public class WorkoutPageViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<ExerciseSet> Sets { get; set; } = new ObservableCollection<ExerciseSet>();
+        public Workout Workout { get; set; } = new Workout();
+        public ObservableCollection<ExerciseBatchViewModel> ExerciseBatches { get; set; } = new ObservableCollection<ExerciseBatchViewModel>();
 
         public WorkoutPageViewModel()
         {
-            Sets.Add(new ExerciseSet { SetNumber = 1, Weight = 100, Reps = 10, Exercise = new Exercise { Name = "Bench Press" }, IsNewSet = false });
-            Sets.Add(new ExerciseSet { SetNumber = 2, IsNewSet = true });
         }
 
-        public void AddNewSet(int weight, int reps)
-        {
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

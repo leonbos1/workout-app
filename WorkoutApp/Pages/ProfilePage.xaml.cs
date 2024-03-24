@@ -17,42 +17,14 @@ public partial class ProfilePage : ContentPage
         _viewModel = viewModel;
 
         BindingContext = _viewModel;
+
+        _workoutRepository.GetNumOfWorkouts().ConfigureAwait(false);
     }
 
     private async void OnAddWorkout(object sender, EventArgs e)
     {
-        var workout = new Workout
-        {
-            Name = "Sample Workout",
-            Description = "This is a sample workout",
-            StartedAt = DateTime.Now,
-            EndedAt = DateTime.Now.AddHours(1),
-            Sets = new List<ExerciseSet>
-            {
-                new ExerciseSet
-                {
-                    Exercise = new Exercise
-                    {
-                        Name = "Pushups",
-                        Description = "Do as many pushups as you can"
-                    },
-                    Reps = 10,
-                    Weight = 0
-                },
-                new ExerciseSet
-                {
-                    Exercise = new Exercise
-                    {
-                        Name = "Squats",
-                        Description = "Do as many squats as you can"
-                    },
-                    Reps = 10,
-                    Weight = 0
-                }
-            }
-        };
+        var workouts = await _workoutRepository.GetAllAsync();
 
-        await _workoutRepository.InsertAsync(workout);
         Console.WriteLine("Workout added");
     }
 
@@ -60,6 +32,19 @@ public partial class ProfilePage : ContentPage
     {
         await _workoutRepository.DeleteAllAsync();
         Console.WriteLine("Workouts removed");
+    }
+
+    private async void OnRemoveSets(object sender, EventArgs e)
+    {
+        await _workoutRepository.DeleteAllSetsAsync();
+        Console.WriteLine("Sets removed");
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        _viewModel.NumOfWorkouts = await _workoutRepository.GetNumOfWorkouts();
     }
 }
 

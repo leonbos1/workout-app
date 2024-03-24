@@ -18,7 +18,7 @@
                     <Image Source="user.png" WidthRequest="120" HeightRequest="120" HorizontalOptions="Center" />
                     <Label Text="Username" FontAttributes="Bold" FontSize="Title" HorizontalOptions="Center"
                TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
-                    <Label Text="Total Workouts: 320" HorizontalOptions="Center"
+                    <Label Text="{Binding NumOfWorkouts}" HorizontalOptions="Center"
                TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
                 </VerticalStackLayout>
             </Frame>
@@ -31,6 +31,7 @@
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}"/>
                     <Button Text="Add Workout" Clicked="OnAddWorkout" BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}" TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
                     <Button Text="Remove Workouts" Clicked="OnRemoveWorkouts" BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}" TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
+                    <Button Text="Remove exercise sets" Clicked="OnRemoveSets" BackgroundColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}" TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
 
                 </VerticalStackLayout>
             </Frame>
