@@ -14,14 +14,9 @@
 
         public string PrettyEndedAt => EndedAt.ToString("MMMM dd");
 
-        public string PrettyDuration
-        {
-            get
-            {
-                var duration = EndedAt - StartedAt;
-                return $"{duration.Hours}h {duration.Minutes}m";
-            }
-        }
+        public TimeSpan Duration => EndedAt - StartedAt;
+
+        public string PrettyDuration => $"{Duration.Hours}h {Duration.Minutes}m";
 
         public double TotalWeight
         {

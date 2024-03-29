@@ -74,6 +74,7 @@ public partial class WorkoutPage : ContentPage
 
         Workout.EndedAt = DateTime.Now;
         Workout.Batches = _viewModel.ExerciseBatches.Select(b => b.ToModel()).ToList();
+        Workout.Id = await _workoutRepository.GetNumOfWorkouts() + 1;
 
         foreach (var batch in Workout.Batches)
         {
@@ -88,6 +89,9 @@ public partial class WorkoutPage : ContentPage
         await _workoutRepository.InsertAsync(Workout);
 
         await NewWorkoutContent.TranslateTo(0, DeviceDisplay.MainDisplayInfo.Height, AnimationTime, Easing.SinOut);
+
+        _viewModel = new WorkoutPageViewModel();
+        Workout = new Workout();
     }
 
     private async void OnAddSetButtonClicked(object sender, EventArgs e)
@@ -108,7 +112,11 @@ public partial class WorkoutPage : ContentPage
         repsEntry.Text = string.Empty;
         weightEntry.Text = string.Empty;
 
-        await _exerciseSetRepository.InsertAsync(new ExerciseSet { Reps = reps, Weight = weight, ExerciseBatchId = context. });
+        var exerciseBatch = new ExerciseBatch { ExerciseId = context.Exercise.Id, WorkoutId = _viewModel.Workout.Id };
+
+        await _exerciseBatchRepository.InsertAsync(exerciseBatch);
+
+        await _exerciseSetRepository.InsertAsync(new ExerciseSet { Reps = reps, Weight = weight, ExerciseBatchId = exerciseBatch.Id });
     }
 
     private async void OnDeleteSetButtonClicked(object sender, EventArgs e)
