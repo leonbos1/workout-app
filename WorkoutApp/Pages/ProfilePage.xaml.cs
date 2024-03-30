@@ -40,6 +40,13 @@ public partial class ProfilePage : ContentPage
         Console.WriteLine("Sets removed");
     }
 
+    private async void OnRemoveAll(object sender, EventArgs e)
+    {
+        await _workoutRepository.DeleteAllSetsAsync();
+        await _workoutRepository.DeleteAllAsync();
+        await _workoutRepository.DeleteAllBatchesAsync();
+    }
+
     protected override async void OnAppearing()
     {
         base.OnAppearing();

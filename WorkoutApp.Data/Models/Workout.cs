@@ -1,9 +1,11 @@
-﻿namespace WorkoutApp.Data.Models
+﻿using SQLite;
+
+namespace WorkoutApp.Data.Models
 {
     public class Workout
     {
-        [SQLite.PrimaryKey, SQLite.AutoIncrement]
-        public int Id { get; set; }
+        [PrimaryKey]
+        public int? Id { get; set; }
         public string Name { get; set; }
 
         public string? Description { get; set; }
@@ -18,7 +20,7 @@
 
         public string PrettyDuration => $"{Duration.Hours}h {Duration.Minutes}m";
 
-        public double TotalWeight
+        public double _totalWeight
         {
             get
             {
@@ -28,12 +30,14 @@
                 {
                     foreach (var set in batch.Sets)
                     {
-                        totalWeight += set.Weight ?? 0.0;
+                        totalWeight += set.Weight * set.Reps ?? 0;
                     }
                 }
                 return totalWeight;
             }
         }
+
+        public double TotalWeight { get; set;}
 
         public int AmountOfPrs => 1;
 

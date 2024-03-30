@@ -6,8 +6,19 @@ namespace WorkoutApp.ViewModels
 {
     public class ExerciseSetViewModel : INotifyPropertyChanged
     {
+        private int _setNumber;
         private int _reps;
         private double _weight;
+
+        public int SetNumber
+        {
+            get => _setNumber;
+            set
+            {
+                _setNumber = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int Reps
         {
@@ -40,6 +51,7 @@ namespace WorkoutApp.ViewModels
         {
             return new ExerciseSet
             {
+                SetNumber = SetNumber,
                 Reps = Reps,
                 Weight = Weight
             };

@@ -22,6 +22,8 @@ namespace WorkoutApp.ViewModels
         {
             var workouts = await _workoutRepository.GetAllAsync();
 
+            workouts.Reverse();
+
             Workouts.Clear();
 
             foreach (var workout in workouts)

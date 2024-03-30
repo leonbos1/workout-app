@@ -41,11 +41,15 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout>
-                                <Label Text="{Binding Exercise.Name}" />
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Label Text="{Binding Exercise.Name}" />
+                                    <Button Text="Delete" Clicked="OnDeleteExerciseButtonClicked" CommandParameter="{Binding .}" />
+                                </StackLayout>
                                 <CollectionView ItemsSource="{Binding Sets}">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
                                             <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding SetNumber}" />
                                                 <Entry Text="{Binding Reps, Mode=TwoWay}" Keyboard="Numeric" WidthRequest="130" />
                                                 <Entry Text="{Binding Weight, Mode=TwoWay}" Keyboard="Numeric" WidthRequest="130" />
                                                 <Button Text="Delete" Clicked="OnDeleteSetButtonClicked" CommandParameter="{Binding .}" />

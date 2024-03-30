@@ -20,7 +20,6 @@ namespace WorkoutApp.Data.Repositories
             Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
 
             _ = await Database.CreateTableAsync<Workout>();
-            _ = await Database.CreateTableAsync<ExerciseSet>();
         }
 
         public async Task<Workout> GetByIdAsync(int id)
@@ -54,11 +53,11 @@ namespace WorkoutApp.Data.Repositories
             return workouts;
         }
 
-        public async Task InsertAsync(Workout workout)
+        public async Task<int> InsertAsync(Workout workout)
         {
             await Init();
 
-            await Database.InsertAsync(workout);
+            return await Database.InsertAsync(workout);
         }
 
         public async Task DeleteAllAsync()
@@ -73,6 +72,13 @@ namespace WorkoutApp.Data.Repositories
             await Init();
 
             await Database.DeleteAllAsync<ExerciseSet>();
+        }
+
+        public async Task DeleteAllBatchesAsync()
+        {
+            await Init();
+
+            await Database.DeleteAllAsync<ExerciseBatch>();
         }
 
         public async Task<int> GetNumOfWorkouts()

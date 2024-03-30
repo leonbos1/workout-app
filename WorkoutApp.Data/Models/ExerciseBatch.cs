@@ -12,7 +12,7 @@ namespace WorkoutApp.Data.Models
         [SQLite.Ignore]
         public Exercise Exercise { get; set; }
 
-        public int WorkoutId { get; set; }
+        public int? WorkoutId { get; set; }
 
         [SQLite.Ignore]
         public Workout Workout { get; set; }
