@@ -74,7 +74,7 @@ public partial class WorkoutPage : ContentPage
 
     private async void OnDeleteExerciseButtonClicked(object sender, EventArgs e)
     {
-        var button = (Button)sender;
+        var button = (ImageButton)sender;
         var context = (ExerciseBatchViewModel)button.BindingContext;
 
         _viewModel.ExerciseBatches.Remove(context);
@@ -117,7 +117,7 @@ public partial class WorkoutPage : ContentPage
 
     private async void OnAddSetButtonClicked(object sender, EventArgs e)
     {
-        var button = (Button)sender;
+        var button = (ImageButton)sender;
         var parentStackLayout = (StackLayout)button.Parent;
         var repsEntry = (Entry)parentStackLayout.Children.First(c => c is Entry && c.AutomationId == "RepsEntry");
         var weightEntry = (Entry)parentStackLayout.Children.First(c => c is Entry && c.AutomationId == "WeightEntry");

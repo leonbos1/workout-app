@@ -43,7 +43,12 @@
                             <StackLayout>
                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                     <Label Text="{Binding Exercise.Name}" />
-                                    <Button Text="Delete" Clicked="OnDeleteExerciseButtonClicked" CommandParameter="{Binding .}" />
+                                    <BoxView HorizontalOptions="End" />
+                                    <ImageButton Source="remove.png" HeightRequest="15" Clicked="OnDeleteExerciseButtonClicked" CommandParameter="{Binding .}">
+                                        <ImageButton.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}" />
+                                        </ImageButton.Behaviors>
+                                    </ImageButton>
                                 </StackLayout>
                                 <CollectionView ItemsSource="{Binding Sets}">
                                     <CollectionView.ItemTemplate>
@@ -60,7 +65,11 @@
                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                     <Entry x:Name="RepsEntry" AutomationId="RepsEntry" Placeholder="Enter Reps" Keyboard="Numeric" WidthRequest="130" />
                                     <Entry x:Name="WeightEntry" AutomationId="WeightEntry" Placeholder="Enter Weight" Keyboard="Numeric" WidthRequest="130" />
-                                    <Button Text="Add Set" Clicked="OnAddSetButtonClicked" CommandParameter="{Binding .}" />
+                                    <ImageButton Source="check.png" HeightRequest="15" Clicked="OnAddSetButtonClicked" CommandParameter="{Binding .}">
+                                        <ImageButton.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}" />
+                                        </ImageButton.Behaviors>
+                                    </ImageButton>
                                 </StackLayout>
                             </StackLayout>
                         </DataTemplate>
