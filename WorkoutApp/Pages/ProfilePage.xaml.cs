@@ -7,13 +7,15 @@ namespace WorkoutApp.Pages;
 public partial class ProfilePage : ContentPage
 {
     private WorkoutRepository _workoutRepository;
+    private ExerciseRepository _exerciseRepository;
     private ProfilePageViewModel _viewModel;
 
-    public ProfilePage(WorkoutRepository workoutRepository, ProfilePageViewModel viewModel)
+    public ProfilePage(WorkoutRepository workoutRepository, ProfilePageViewModel viewModel, ExerciseRepository exerciseRepository)
     {
         InitializeComponent();
 
         _workoutRepository = workoutRepository;
+        _exerciseRepository = exerciseRepository;
         _viewModel = viewModel;
 
         BindingContext = _viewModel;
@@ -52,6 +54,30 @@ public partial class ProfilePage : ContentPage
         base.OnAppearing();
 
         _viewModel.NumOfWorkouts = await _workoutRepository.GetNumOfWorkouts();
+
+        InitExercises();
+    }
+
+    private async void InitExercises()
+    {
+        var exercises = new List<string>
+        {
+            "Bench Press (Barbell)",
+            "Squat (Barbell)",
+            "Deadlift (Barbell)",
+            "Overhead Press (Barbell)",
+            "Barbell Row (Barbell)"
+        };
+
+        foreach (var exercise in exercises)
+        {
+            var existingExercise = await _exerciseRepository.GetByNameAsync(exercise);
+
+            if (existingExercise == null)
+            {
+                await _exerciseRepository.InsertAsync(new Exercise { Name = exercise });
+            }
+        }
     }
 }
 

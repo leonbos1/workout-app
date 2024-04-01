@@ -48,5 +48,12 @@ namespace WorkoutApp.Data.Repositories
 
             await Database.DeleteAllAsync<Exercise>();
         }
+
+        public async Task<Exercise> GetByNameAsync(string name)
+        {
+            await Init();
+
+            return await Database.Table<Exercise>().Where(e => e.Name == name).FirstOrDefaultAsync();
+        }
     }
 }

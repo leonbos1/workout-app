@@ -9,6 +9,7 @@ namespace WorkoutApp.ViewModels
         private int _setNumber;
         private int _reps;
         private double _weight;
+        public int SetNumberPlusOne => SetNumber + 1;
 
         public int SetNumber
         {

@@ -118,9 +118,10 @@ public partial class WorkoutPage : ContentPage
     private async void OnAddSetButtonClicked(object sender, EventArgs e)
     {
         var button = (ImageButton)sender;
-        var parentStackLayout = (StackLayout)button.Parent;
-        var repsEntry = (Entry)parentStackLayout.Children.First(c => c is Entry && c.AutomationId == "RepsEntry");
-        var weightEntry = (Entry)parentStackLayout.Children.First(c => c is Entry && c.AutomationId == "WeightEntry");
+        var grid = (Grid)button.Parent;
+
+        var repsEntry = (Entry)grid.FindByName("FooterRepsEntry");
+        var weightEntry = (Entry)grid.FindByName("FooterWeightEntry");
 
         int reps = int.TryParse(repsEntry.Text, out int r) ? r : 0;
         double weight = double.TryParse(weightEntry.Text, out double w) ? w : 0.0;

@@ -44,38 +44,86 @@
                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                     <Label Text="{Binding Exercise.Name}" />
                                     <BoxView HorizontalOptions="End" />
-                                    <ImageButton Source="remove.png" HeightRequest="15" Clicked="OnDeleteExerciseButtonClicked" CommandParameter="{Binding .}">
+                                    <ImageButton Source="trash.png" HeightRequest="15" Clicked="OnDeleteExerciseButtonClicked" CommandParameter="{Binding .}">
                                         <ImageButton.Behaviors>
-                                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}" />
+                                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
                                         </ImageButton.Behaviors>
                                     </ImageButton>
                                 </StackLayout>
                                 <CollectionView ItemsSource="{Binding Sets}">
+                                    <CollectionView.Header>
+                                        <Grid ColumnSpacing="20" Padding="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80" />
+                                                <ColumnDefinition Width="80" />
+                                                <ColumnDefinition Width="80" />
+                                                <ColumnDefinition Width="80" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Grid.Column="0" Text="Set" VerticalOptions="Center" HorizontalOptions="Center" />
+                                            <Label Grid.Column="1" Text="Reps" VerticalOptions="Center" HorizontalOptions="Center" />
+                                            <Label Grid.Column="2" Text="Kg" VerticalOptions="Center" HorizontalOptions="Center" />
+                                        </Grid>
+                                    </CollectionView.Header>
+
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding SetNumber}" />
-                                                <Entry Text="{Binding Reps, Mode=TwoWay}" Keyboard="Numeric" WidthRequest="130" />
-                                                <Entry Text="{Binding Weight, Mode=TwoWay}" Keyboard="Numeric" WidthRequest="130" />
-                                                <Button Text="Delete" Clicked="OnDeleteSetButtonClicked" CommandParameter="{Binding .}" />
-                                            </StackLayout>
+                                            <Grid ColumnSpacing="20" Padding="10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="80" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Grid.Column="0" Text="{Binding SetNumber}" VerticalOptions="Center" HorizontalOptions="Center" />
+
+                                                <Frame Grid.Column="1" Padding="0" HeightRequest="40" CornerRadius="10" BackgroundColor="#323333" BorderColor="#323333">
+                                                    <Entry Visual="Material" Text="{Binding Reps, Mode=TwoWay}" Keyboard="Numeric" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="Transparent"/>
+                                                </Frame>
+
+                                                <Frame Grid.Column="2" Padding="0" HeightRequest="40" CornerRadius="10" BackgroundColor="#323333" BorderColor="#323333">
+                                                    <Entry Visual="Material" Text="{Binding Weight, Mode=TwoWay}" Keyboard="Numeric" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="Transparent"/>
+                                                </Frame>
+
+                                                <ImageButton Grid.Column="3" Source="trash.png" HeightRequest="30" WidthRequest="30" VerticalOptions="Center" HorizontalOptions="Center" Clicked="OnDeleteSetButtonClicked" CommandParameter="{Binding .}">
+                                                    <ImageButton.Behaviors>
+                                                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
+                                                    </ImageButton.Behaviors>
+                                                </ImageButton>
+                                            </Grid>
                                         </DataTemplate>
+
                                     </CollectionView.ItemTemplate>
+
+                                    <CollectionView.Footer>
+                                        <Grid ColumnSpacing="20" Padding="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80" />
+                                                <ColumnDefinition Width="80" />
+                                                <ColumnDefinition Width="80" />
+                                                <ColumnDefinition Width="80" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Grid.Column="0" Text="  " VerticalOptions="Center" HorizontalOptions="Center" />
+                                            <Frame Grid.Column="1" Padding="0" HeightRequest="40" CornerRadius="10" BackgroundColor="#323333" BorderColor="#323333">
+                                                <Entry x:Name="FooterRepsEntry" AutomationId="RepsEntry" Grid.Column="1" Placeholder="Enter Reps" Keyboard="Numeric" VerticalOptions="Center" HorizontalOptions="Center" />
+                                            </Frame>
+                                            <Frame Grid.Column="2" Padding="0" HeightRequest="40" CornerRadius="10" BackgroundColor="#323333" BorderColor="#323333">
+                                                <Entry x:Name="FooterWeightEntry" AutomationId="WeightEntry" Grid.Column="2" Placeholder="Enter Weight" Keyboard="Numeric" VerticalOptions="Center" HorizontalOptions="Center" />
+                                            </Frame>
+                                            <ImageButton Grid.Column="3" Source="check.png" HeightRequest="30" WidthRequest="30" VerticalOptions="Center" HorizontalOptions="Center" Clicked="OnAddSetButtonClicked" CommandParameter="{Binding .}">
+                                                <ImageButton.Behaviors>
+                                                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}" />
+                                                </ImageButton.Behaviors>
+                                            </ImageButton>
+                                        </Grid>
+                                    </CollectionView.Footer>
                                 </CollectionView>
-                                <StackLayout Orientation="Horizontal" Spacing="10">
-                                    <Entry x:Name="RepsEntry" AutomationId="RepsEntry" Placeholder="Enter Reps" Keyboard="Numeric" WidthRequest="130" />
-                                    <Entry x:Name="WeightEntry" AutomationId="WeightEntry" Placeholder="Enter Weight" Keyboard="Numeric" WidthRequest="130" />
-                                    <ImageButton Source="check.png" HeightRequest="15" Clicked="OnAddSetButtonClicked" CommandParameter="{Binding .}">
-                                        <ImageButton.Behaviors>
-                                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={DynamicResource Primary}, Dark={DynamicResource PrimaryDark}}" />
-                                        </ImageButton.Behaviors>
-                                    </ImageButton>
-                                </StackLayout>
                             </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
             </VerticalStackLayout>
         </ContentView>
 
