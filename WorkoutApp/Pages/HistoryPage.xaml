@@ -50,9 +50,6 @@
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}"/>
                             </HorizontalStackLayout>
                         </HorizontalStackLayout>
-
-                        <Label Text="{Binding AmountOfPrs}" HorizontalOptions="Start"
-                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryText}, Dark={DynamicResource PrimaryDarkText}}"/>
                     </VerticalStackLayout>
                 </Frame>
             </DataTemplate>

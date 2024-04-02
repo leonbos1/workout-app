@@ -39,7 +39,7 @@ namespace WorkoutApp.Data.Models
 
         public double TotalWeight { get; set;}
 
-        public int AmountOfPrs => 1;
+        public int AmountOfPrs { get; set; }
 
         public DateTime EndedAt { get; set; }
 

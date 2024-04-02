@@ -87,5 +87,37 @@ namespace WorkoutApp.Data.Repositories
 
             return await Database.Table<Workout>().CountAsync();
         }
+
+        public async Task<int> GetAmountOfPersonalRecordsAsync(Workout workout)
+        {
+            await Init();
+
+            var prs = 0;
+
+            var allSets = workout.Batches.SelectMany(b => b.Sets).ToList();
+
+            var exercises = allSets.Select(s => s.Exercise).Distinct();
+
+            foreach (var exercise in exercises)
+            {
+                var batches = await Database.Table<ExerciseBatch>().Where(b => b.ExerciseId == exercise.Id).ToListAsync();
+
+                foreach (var batch in batches)
+                {
+                    batch.Sets = await Database.Table<ExerciseSet>().Where(s => s.ExerciseBatchId == batch.Id).ToListAsync();
+                }
+
+                var maxWeight = batches.SelectMany(b => b.Sets).Max(s => s.Weight);
+
+                var allSetsThisWorkout = workout.Batches.Where(b => b.ExerciseId == exercise.Id).SelectMany(b => b.Sets).ToList();
+
+                var currentWeight = allSetsThisWorkout.Where(s => s.ExerciseId == exercise.Id).Max(s => s.Weight);
+
+                if (currentWeight > maxWeight)
+                    prs++;
+            }
+
+            return prs;
+        }
     }
 }

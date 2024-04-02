@@ -92,18 +92,30 @@ public partial class WorkoutPage : ContentPage
         Workout.TotalWeight = Workout._totalWeight;
 
         var workoutId = await _workoutRepository.InsertAsync(Workout);
+        Workout.Id = workoutId;
 
         foreach (var batch in Workout.Batches)
         {
             batch.WorkoutId = workoutId;
+            batch.ExerciseId = batch.Exercise.Id;
             var batchId = await _exerciseBatchRepository.InsertAsync(batch);
+            batch.Id = batchId;
 
             foreach (var set in batch.Sets)
             {
+                set.ExerciseId = batch.Exercise.Id;
+                set.Exercise = batch.Exercise;
                 set.ExerciseBatchId = batchId;
                 await _exerciseSetRepository.InsertAsync(set);
+                set.Id = set.Id;
             }
         }
+
+        var amountOfPrs = await _workoutRepository.GetAmountOfPersonalRecordsAsync(Workout);
+
+        Workout.AmountOfPrs = amountOfPrs;
+
+        await _workoutRepository.UpdateAsync(Workout);
 
         await NewWorkoutContent.TranslateTo(0, DeviceDisplay.MainDisplayInfo.Height, AnimationTime, Easing.SinOut);
 
@@ -137,7 +149,7 @@ public partial class WorkoutPage : ContentPage
 
     private async void OnDeleteSetButtonClicked(object sender, EventArgs e)
     {
-        var button = (Button)sender;
+        var button = (ImageButton)sender;
         var context = (ExerciseSetViewModel)button.BindingContext;
 
         var exerciseBatchViewModel = (ExerciseBatchViewModel)button.Parent.Parent.BindingContext;
