@@ -82,43 +82,71 @@ public partial class WorkoutPage : ContentPage
 
     private async void OnEndWorkoutClicked(object sender, EventArgs e)
     {
+        StopWorkoutTimer();
+        HideOngoingWorkoutUI();
+
+        PrepareWorkoutForSaving();
+        await SaveWorkoutAsync();
+
+        await AnimateNewWorkoutUI();
+        ResetWorkoutEnvironment();
+    }
+
+    private void StopWorkoutTimer()
+    {
         _workoutTimer.Stop();
+    }
 
+    private void HideOngoingWorkoutUI()
+    {
         OngoingWorkoutContent.IsVisible = false;
+    }
 
+    private void PrepareWorkoutForSaving()
+    {
         Workout.EndedAt = DateTime.Now;
         Workout.Batches = _viewModel.ExerciseBatches.Select(b => b.ToModel()).ToList();
         Workout.Batches.ForEach(b => b.WorkoutId = Workout.Id);
         Workout.TotalWeight = Workout._totalWeight;
+    }
 
-        var workoutId = await _workoutRepository.InsertAsync(Workout);
-        Workout.Id = workoutId;
+    private async Task SaveWorkoutAsync()
+    {
+        Workout.Id = await _workoutRepository.InsertAsync(Workout);
+        await SaveBatchesAsync();
+        Workout.AmountOfPrs = await _workoutRepository.GetAmountOfPersonalRecordsAsync(Workout);
+        await _workoutRepository.UpdateAsync(Workout);
+    }
 
+    private async Task SaveBatchesAsync()
+    {
         foreach (var batch in Workout.Batches)
         {
-            batch.WorkoutId = workoutId;
+            batch.WorkoutId = Workout.Id;
             batch.ExerciseId = batch.Exercise.Id;
-            var batchId = await _exerciseBatchRepository.InsertAsync(batch);
-            batch.Id = batchId;
-
-            foreach (var set in batch.Sets)
-            {
-                set.ExerciseId = batch.Exercise.Id;
-                set.Exercise = batch.Exercise;
-                set.ExerciseBatchId = batchId;
-                await _exerciseSetRepository.InsertAsync(set);
-                set.Id = set.Id;
-            }
+            batch.Id = await _exerciseBatchRepository.InsertAsync(batch);
+            await SaveSetsAsync(batch);
         }
+    }
 
-        var amountOfPrs = await _workoutRepository.GetAmountOfPersonalRecordsAsync(Workout);
+    private async Task SaveSetsAsync(ExerciseBatch batch)
+    {
+        foreach (var set in batch.Sets)
+        {
+            set.ExerciseId = batch.Exercise.Id;
+            set.Exercise = batch.Exercise;
+            set.ExerciseBatchId = batch.Id;
+            set.Id = await _exerciseSetRepository.InsertAsync(set);
+        }
+    }
 
-        Workout.AmountOfPrs = amountOfPrs;
-
-        await _workoutRepository.UpdateAsync(Workout);
-
+    private async Task AnimateNewWorkoutUI()
+    {
         await NewWorkoutContent.TranslateTo(0, DeviceDisplay.MainDisplayInfo.Height, AnimationTime, Easing.SinOut);
+    }
 
+    private void ResetWorkoutEnvironment()
+    {
         _viewModel = new WorkoutPageViewModel();
         Workout = new Workout();
         _workoutTimer = new System.Timers.Timer(1000);

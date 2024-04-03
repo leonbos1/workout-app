@@ -35,11 +35,11 @@ namespace WorkoutApp.Data.Repositories
             return await Database.Table<ExerciseSet>().ToListAsync();
         }
 
-        public async Task InsertAsync(ExerciseSet exercise)
+        public async Task<int> InsertAsync(ExerciseSet exercise)
         {
             await Init();
 
-            await Database.InsertAsync(exercise);
+            return await Database.InsertAsync(exercise);
         }
 
         public async Task DeleteAllAsync()
