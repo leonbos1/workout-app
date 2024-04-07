@@ -8,14 +8,18 @@ public partial class ProfilePage : ContentPage
 {
     private WorkoutRepository _workoutRepository;
     private ExerciseRepository _exerciseRepository;
+    private ExerciseBatchRepository _exerciseBatchRepository;
+    private ExerciseSetRepository _exerciseSetRepository;
     private ProfilePageViewModel _viewModel;
 
-    public ProfilePage(WorkoutRepository workoutRepository, ProfilePageViewModel viewModel, ExerciseRepository exerciseRepository)
+    public ProfilePage(WorkoutRepository workoutRepository, ProfilePageViewModel viewModel, ExerciseRepository exerciseRepository, ExerciseBatchRepository exerciseBatchRepository, ExerciseSetRepository exerciseSetRepository)
     {
         InitializeComponent();
 
         _workoutRepository = workoutRepository;
         _exerciseRepository = exerciseRepository;
+        _exerciseBatchRepository = exerciseBatchRepository;
+        _exerciseSetRepository = exerciseSetRepository;
         _viewModel = viewModel;
 
         BindingContext = _viewModel;
@@ -44,9 +48,9 @@ public partial class ProfilePage : ContentPage
 
     private async void OnRemoveAll(object sender, EventArgs e)
     {
-        await _workoutRepository.DeleteAllSetsAsync();
+        await _exerciseSetRepository.DeleteAllAsync();
+        await _exerciseBatchRepository.DeleteAllAsync();
         await _workoutRepository.DeleteAllAsync();
-        await _workoutRepository.DeleteAllBatchesAsync();
     }
 
     protected override async void OnAppearing()

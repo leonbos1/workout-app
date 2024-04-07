@@ -85,11 +85,19 @@ public partial class WorkoutPage : ContentPage
         StopWorkoutTimer();
         HideOngoingWorkoutUI();
 
-        PrepareWorkoutForSaving();
+        await InitialSaveWorkoutAsync();
+
+        await PrepareWorkoutForSaving();
+
         await SaveWorkoutAsync();
 
         await AnimateNewWorkoutUI();
         ResetWorkoutEnvironment();
+    }
+
+    private async Task SaveWorkoutAsync()
+    {
+        await _workoutRepository.UpdateAsync(Workout);
     }
 
     private void StopWorkoutTimer()
@@ -102,19 +110,33 @@ public partial class WorkoutPage : ContentPage
         OngoingWorkoutContent.IsVisible = false;
     }
 
-    private void PrepareWorkoutForSaving()
+    private async Task PrepareWorkoutForSaving()
     {
         Workout.EndedAt = DateTime.Now;
-        Workout.Batches = _viewModel.ExerciseBatches.Select(b => b.ToModel()).ToList();
+
         Workout.Batches.ForEach(b => b.WorkoutId = Workout.Id);
+
+        foreach (var batch in Workout.Batches)
+        {
+            batch.Sets.ForEach(s => s.ExerciseId = batch.ExerciseId);
+            batch.Sets.ForEach(s => s.Exercise = batch.Exercise);
+            batch.Sets.ForEach(s => s.ExerciseBatchId = batch.Id);
+            batch.Sets.ForEach(s => s.ExerciseBatch = batch);
+        }
+
+        Workout.AmountOfPrs = await _workoutRepository.GetAmountOfPersonalRecordsAsync(Workout);
+
         Workout.TotalWeight = Workout._totalWeight;
     }
 
-    private async Task SaveWorkoutAsync()
+    private async Task InitialSaveWorkoutAsync()
     {
         Workout.Id = await _workoutRepository.InsertAsync(Workout);
+
+        Workout.Batches = _viewModel.ExerciseBatches.Select(b => b.ToModel()).ToList();
+
         await SaveBatchesAsync();
-        Workout.AmountOfPrs = await _workoutRepository.GetAmountOfPersonalRecordsAsync(Workout);
+
         await _workoutRepository.UpdateAsync(Workout);
     }
 
